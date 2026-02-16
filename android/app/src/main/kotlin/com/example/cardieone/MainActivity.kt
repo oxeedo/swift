@@ -1,4 +1,4 @@
-package com.example.swift_app
+package com.example.cardieone
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,6 +1,7 @@
+import 'package:cardieone/theme.dart';
 import 'package:flutter/material.dart';
-import '../theme.dart';
-import '../screens/onboarding/get_started_page1.dart';
+import 'package:cardieone/login/login_screen.dart';
+import 'package:cardieone/onboarding-screens/onboarding/get_started_page1.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
@@ -22,18 +23,20 @@ class OnboardingScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.account_balance, color: Colors.white, size: 32),
+                      const Icon(Icons.account_balance,
+                          color: Colors.white, size: 32),
                       const SizedBox(width: 8),
                       Text(
                         'Swift Pay Bank',
-                        style: AppTheme.headingLarge.copyWith(color: Colors.white),
+                        style:
+                            AppTheme.headingLarge.copyWith(color: Colors.white),
                       ),
                     ],
                   ),
                 ),
                 SizedBox(height: size.height * 0.06),
                 // This SizedBox reserves space for the phone image in the stack
-                SizedBox(height: 120),
+                const SizedBox(height: 120),
               ],
             ),
             // Phone mockup image (centered, floating above the card)
@@ -56,8 +59,9 @@ class OnboardingScreen extends StatelessWidget {
               bottom: 0,
               child: Container(
                 width: double.infinity,
-                 height: 310,
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                height: 310,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
@@ -86,10 +90,16 @@ class OnboardingScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: OutlinedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginScreen()),
+                              );
+                            },
                             style: OutlinedButton.styleFrom(
                               foregroundColor: AppTheme.primaryBlue,
-                              side: const BorderSide(color: AppTheme.primaryBlue),
+                              side:
+                                  const BorderSide(color: AppTheme.primaryBlue),
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
@@ -103,7 +113,9 @@ class OnboardingScreen extends StatelessWidget {
                           child: ElevatedButton(
                             onPressed: () {
                               Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) => const GetStartedPage1()),
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const GetStartedPage1()),
                               );
                             },
                             style: ElevatedButton.styleFrom(
@@ -128,4 +140,4 @@ class OnboardingScreen extends StatelessWidget {
       ),
     );
   }
-} 
+}

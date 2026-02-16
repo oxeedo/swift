@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
 import '../../theme.dart';
 import 'secure_access_page.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class VerifyPhonePage extends StatefulWidget {
   const VerifyPhonePage({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class VerifyPhonePage extends StatefulWidget {
 class _VerifyPhonePageState extends State<VerifyPhonePage> {
   final List<TextEditingController> _controllers =
       List.generate(6, (_) => TextEditingController());
-  final FocusNode _focusNode = FocusNode();
+  final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
   bool _isOtpComplete = false;
   bool _isLoading = false;
 
@@ -34,46 +35,84 @@ class _VerifyPhonePageState extends State<VerifyPhonePage> {
     }
   }
 
+  void _handleBackspace(int index) {
+    if (_controllers[index].text.isEmpty && index > 0) {
+      // Move to previous field if current field is empty
+      _focusNodes[index - 1].requestFocus();
+      // Clear the previous field
+      _controllers[index - 1].clear();
+    }
+  }
+
   @override
   void dispose() {
     for (final c in _controllers) {
       c.removeListener(_checkOtpCompletion);
       c.dispose();
     }
-    _focusNode.dispose();
+    for (final node in _focusNodes) {
+      node.dispose();
+    }
     super.dispose();
   }
 
   Widget _buildCodeInput(int index) {
     return SizedBox(
       width: 44,
-      child: TextField(
-        controller: _controllers[index],
-        focusNode: index == 0 ? _focusNode : null,
-        textAlign: TextAlign.center,
-        keyboardType: TextInputType.number,
-        maxLength: 1,
-        style: AppTheme.headingLarge.copyWith(
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
-        decoration: InputDecoration(
-          counterText: '',
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: Color(0xFFBDBDBD)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: AppTheme.primaryBlue),
-          ),
-          contentPadding: const EdgeInsets.symmetric(vertical: 12),
-        ),
-        onChanged: (val) {
-          if (val.length == 1 && index < 5) {
-            FocusScope.of(context).nextFocus();
+      child: RawKeyboardListener(
+        focusNode: FocusNode(),
+        onKey: (RawKeyEvent event) {
+          if (event is RawKeyDownEvent &&
+              event.logicalKey == LogicalKeyboardKey.backspace &&
+              _controllers[index].text.isEmpty) {
+            _handleBackspace(index);
           }
         },
+        child: TextField(
+          controller: _controllers[index],
+          focusNode: _focusNodes[index],
+          textAlign: TextAlign.center,
+          keyboardType: TextInputType.number,
+          maxLength: 1,
+          style: AppTheme.headingLarge.copyWith(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+          decoration: InputDecoration(
+            counterText: '',
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Color(0xFFBDBDBD)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: AppTheme.primaryBlue),
+            ),
+            contentPadding: const EdgeInsets.symmetric(vertical: 12),
+          ),
+          onChanged: (val) {
+            if (val.length == 1 && index < 5) {
+              _focusNodes[index + 1].requestFocus();
+            }
+          },
+          onTap: () {
+            // Select all text when tapped
+            _controllers[index].selection = TextSelection(
+              baseOffset: 0,
+              extentOffset: _controllers[index].text.length,
+            );
+          },
+          onEditingComplete: () {
+            if (index < 5) {
+              _focusNodes[index + 1].requestFocus();
+            }
+          },
+          onSubmitted: (val) {
+            if (index < 5) {
+              _focusNodes[index + 1].requestFocus();
+            }
+          },
+        ),
       ),
     );
   }
@@ -170,13 +209,9 @@ class _VerifyPhonePageState extends State<VerifyPhonePage> {
                 child: ElevatedButton(
                   onPressed: (_isOtpComplete && !_isLoading)
                       ? () async {
-                          setState(() {
-                            _isLoading = true;
-                          });
+                          setState(() => _isLoading = true);
                           await Future.delayed(const Duration(seconds: 2));
-                          setState(() {
-                            _isLoading = false;
-                          });
+                          setState(() => _isLoading = false);
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => const SecureAccessPage(),
@@ -187,13 +222,13 @@ class _VerifyPhonePageState extends State<VerifyPhonePage> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: (_isOtpComplete && !_isLoading)
                         ? AppTheme.primaryBlue
-                        : Colors.grey,
-                    foregroundColor: Colors.white,
+                        : const Color(0xFFD6E6F5),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                     elevation: 0,
+                    disabledBackgroundColor: const Color(0xFFD6E6F5),
                   ),
                   child: _isLoading
                       ? const SizedBox(
@@ -204,7 +239,14 @@ class _VerifyPhonePageState extends State<VerifyPhonePage> {
                             strokeWidth: 3,
                           ),
                         )
-                      : const Text('Verify'),
+                      : const Text(
+                          'Verify',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
                 ),
               ),
               const SizedBox(height: 24),

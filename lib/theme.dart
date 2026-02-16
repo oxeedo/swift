@@ -7,7 +7,7 @@ class AppTheme {
   static const Color white = Colors.white;
   static const Color black = Colors.black;
   static const Color grey = Color(0xFF757575);
-  static const Color lightGrey = Color(0xFFEEEEEE);
+  static const Color lightGrey = Color(0xFF88A9C9);
 
   // Gradients
   static const LinearGradient primaryGradient = LinearGradient(
@@ -96,30 +96,31 @@ class AppTheme {
 
   // Theme Data
   static ThemeData get theme => ThemeData(
-    primaryColor: primaryBlue,
-    scaffoldBackgroundColor: white,
-    colorScheme: const ColorScheme.light(
-      primary: primaryBlue,
-      secondary: secondaryBlue,
-    ),
-    textTheme: const TextTheme(
-      displayLarge: headingLarge,
-      displayMedium: headingMedium,
-      bodyLarge: bodyLarge,
-      bodyMedium: bodyMedium,
-      bodySmall: bodySmall,
-    ),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: primaryButtonStyle,
-    ),
-    inputDecorationTheme: InputDecorationTheme(
-      filled: true,
-      fillColor: white,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide.none,
-      ),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-    ),
-  );
+        primaryColor: primaryBlue,
+        scaffoldBackgroundColor: white,
+        colorScheme: const ColorScheme.light(
+          primary: primaryBlue,
+          secondary: secondaryBlue,
+        ),
+        textTheme: const TextTheme(
+          displayLarge: headingLarge,
+          displayMedium: headingMedium,
+          bodyLarge: bodyLarge,
+          bodyMedium: bodyMedium,
+          bodySmall: bodySmall,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: primaryButtonStyle,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide.none,
+          ),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        ),
+      );
 }

@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import '../../theme.dart';
 import 'create_passcode_page.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class SecureAccessPage extends StatefulWidget {
   const SecureAccessPage({Key? key}) : super(key: key);
@@ -16,7 +16,8 @@ class _SecureAccessPageState extends State<SecureAccessPage> {
       context: context,
       builder: (context) => CupertinoAlertDialog(
         title: const Text('Do you want to allow "Swift Pay" to use Face ID?'),
-        content: const Text('This allows you to login to Swift Pay using Face ID.'),
+        content:
+            const Text('This allows you to login to Swift Pay using Face ID.'),
         actions: [
           CupertinoDialogAction(
             child: const Text("Don't Allow"),
@@ -26,7 +27,8 @@ class _SecureAccessPageState extends State<SecureAccessPage> {
             child: const Text('OK'),
             onPressed: () {
               Navigator.of(context).pop();
-              Future.delayed(const Duration(milliseconds: 200), _showFaceIdModal);
+              Future.delayed(
+                  const Duration(milliseconds: 200), _showFaceIdModal);
             },
           ),
         ],
@@ -56,12 +58,13 @@ class _SecureAccessPageState extends State<SecureAccessPage> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Column(
+              child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Icon(Icons.face, size: 64, color: Colors.black54),
                   SizedBox(height: 12),
-                  Text('Face ID', style: TextStyle(fontSize: 20, color: Colors.black54)),
+                  Text('Face ID',
+                      style: TextStyle(fontSize: 20, color: Colors.black54)),
                 ],
               ),
             ),
@@ -121,8 +124,10 @@ class _SecureAccessPageState extends State<SecureAccessPage> {
               const SizedBox(height: 32),
               // Face ID & Passcode option
               ListTile(
-                leading: Icon(Icons.face, size: 32, color: AppTheme.primaryBlue),
-                title: Text('Face ID & Passcode', style: AppTheme.bodyLarge),
+                leading:
+                    Image.asset('assets/faceId.png', width: 32, height: 32),
+                title: Text('Face ID & Passcode',
+                    style: AppTheme.bodyLarge.copyWith(color: Colors.black)),
                 onTap: _showFaceIdDialog,
                 contentPadding: EdgeInsets.zero,
                 shape: Border(
@@ -131,8 +136,10 @@ class _SecureAccessPageState extends State<SecureAccessPage> {
               ),
               // Passcode only option
               ListTile(
-                leading: Icon(Icons.dialpad, size: 32, color: AppTheme.primaryBlue),
-                title: Text('Passcode only', style: AppTheme.bodyLarge),
+                leading: const Icon(Icons.dialpad,
+                    size: 32, color: AppTheme.primaryBlue),
+                title: Text('Passcode only',
+                    style: AppTheme.bodyLarge.copyWith(color: Colors.black)),
                 onTap: () {},
                 contentPadding: EdgeInsets.zero,
               ),
@@ -142,4 +149,4 @@ class _SecureAccessPageState extends State<SecureAccessPage> {
       ),
     );
   }
-} 
+}

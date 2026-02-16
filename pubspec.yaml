@@ -1,5 +1,5 @@
-name: swift_app
-description: A Flutter application with splash screens.
+name: cardieone
+description: A NFC mobile App.
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -19,6 +19,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/logo.png
-    - assets/logo2.png
-    - assets/phone_img.png
+    # - assets/logo.png
+    # - assets/logo2.png
+    # - assets/phone_img.png
+    # - assets/faceId.png
